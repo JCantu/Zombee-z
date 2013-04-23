@@ -54,6 +54,7 @@ public class Zombie implements ApplicationListener {
 		// create the raindrops array and spawn the first raindrop
 		zombies = new Array<Rectangle>();
 		spawnZombie();
+		level = 3;
 		StartTime = TimeUtils.nanoTime();
 }
 	private void spawnChar() {rpgChar = new Rectangle();
@@ -136,13 +137,14 @@ public class Zombie implements ApplicationListener {
 		
 		while (iter.hasNext()) {
 			Rectangle zombie = iter.next();
-			zombie.y -= 200 * Gdx.graphics.getDeltaTime();
+			moveZombie(zombie, level);
 			if (zombie.y + 48 < 0)
 				iter.remove();
 			if (zombie.overlaps(rpgChar)) {
 				//sawSound.play();
 				iter.remove();
 				spawnChar();
+				StartTime = TimeUtils.nanoTime();
 			}	
 			if ((TimeUtils.nanoTime() - StartTime)/100 >= 100000000){
 				zombies.clear();
@@ -165,7 +167,35 @@ public class Zombie implements ApplicationListener {
 	@Override
 	public void resize(int width, int height) {
 	}
-
+	
+	public void moveZombie(Rectangle zombie, int level){
+		switch (level){
+		case 1: zombie.y -= 200 * Gdx.graphics.getDeltaTime();
+				break;
+		case 2: zombie.y -= 200 * Gdx.graphics.getDeltaTime();
+				if (zombie.x > rpgChar.x){
+					zombie.x -= ((zombie.x + rpgChar.x)/2)*Gdx.graphics.getDeltaTime();}
+				else if(zombie.x < rpgChar.x){
+					zombie.x += ((zombie.x + rpgChar.x)/2)*Gdx.graphics.getDeltaTime();}
+				//if (zombie.x - rpgChar.x <= 10)
+				//	zombie.x = rpgChar.x;
+				break;
+		case 3: if (zombie.x > rpgChar.x){
+			zombie.x -= ((zombie.x + rpgChar.x)/4)*Gdx.graphics.getDeltaTime();}
+				else{
+			zombie.x += ((zombie.x + rpgChar.x)/4)*Gdx.graphics.getDeltaTime();}
+				if (zombie.y > rpgChar.y){
+			zombie.y -= ((zombie.y + rpgChar.y)/4)*Gdx.graphics.getDeltaTime();}
+				else{
+			zombie.y += ((zombie.y + rpgChar.y)/4)*Gdx.graphics.getDeltaTime();}
+				break;
+		
+				
+		}
+		
+		
+		
+	}
 	@Override
 	public void pause() {
 	}
