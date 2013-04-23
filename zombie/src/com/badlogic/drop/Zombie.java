@@ -29,6 +29,7 @@ public class Zombie implements ApplicationListener {
 	long lastZombieTime;
 	long StartTime;
 	int level;
+	boolean runonce;
 
 	@Override
 	public void create() {
@@ -55,7 +56,9 @@ public class Zombie implements ApplicationListener {
 		zombies = new Array<Rectangle>();
 		spawnZombie();
 		level = 0;
+
 		StartTime = TimeUtils.nanoTime();
+		
 }
 	private void spawnChar() {rpgChar = new Rectangle();
 	rpgChar.x = 800 / 2 - 48 / 2; // center the bucket horizontally
@@ -83,9 +86,10 @@ public class Zombie implements ApplicationListener {
 		Texture texture = new Texture(Gdx.files.internal("background.png"));
 		//Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		 batch.begin();
-	     batch.draw(texture, 0, 0);
-	     batch.end();
+		
+
+	     
+	 
 		
 		// tell the camera to update its matrices.
 		camera.update();
@@ -97,6 +101,7 @@ public class Zombie implements ApplicationListener {
 		// begin a new batch and draw the bucket and
 		// all drops
 		batch.begin();
+		batch.draw(texture, 0, 0);
 		batch.draw(rpgImage, rpgChar.x, rpgChar.y);
 		for (Rectangle zombie : zombies) {
 			batch.draw(zombieImage, zombie.x, zombie.y);
