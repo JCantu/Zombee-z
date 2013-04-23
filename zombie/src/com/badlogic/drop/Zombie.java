@@ -80,9 +80,13 @@ public class Zombie implements ApplicationListener {
 		// arguments to glClearColor are the red, green
 		// blue and alpha component in the range [0,1]
 		// of the color to be used to clear the screen.
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Texture texture = new Texture(Gdx.files.internal("background.png"));
+		//Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
+		 batch.begin();
+	     batch.draw(texture, 0, 0);
+	     batch.end();
+		
 		// tell the camera to update its matrices.
 		camera.update();
 
