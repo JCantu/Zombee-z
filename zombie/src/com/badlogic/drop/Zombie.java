@@ -54,7 +54,7 @@ public class Zombie implements ApplicationListener {
 		// create the raindrops array and spawn the first raindrop
 		zombies = new Array<Rectangle>();
 		spawnZombie();
-		level = 3;
+		level = 0;
 		StartTime = TimeUtils.nanoTime();
 }
 	private void spawnChar() {rpgChar = new Rectangle();
@@ -123,12 +123,19 @@ public class Zombie implements ApplicationListener {
 			rpgChar.x = 800 - 48;
 		if (rpgChar.y < 0)
 			rpgChar.y = 0;
-		if (rpgChar.y > 800 - 48)
-			rpgChar.y = 800 - 48;
+		if (rpgChar.y > 800 + 48)
+			rpgChar.y = 800 + 48;
 
 		// check if we need to create a new raindrop
 		if (TimeUtils.nanoTime() - lastZombieTime > 1000000000)
-			spawnZombie();
+			if (level == 0){
+				if (zombies.size < 15)
+					spawnZombie();}
+			else
+				spawnZombie();
+		
+				
+					
 
 		// move the raindrops, remove any that are beneath the bottom edge of
 		// the screen or that hit the bucket. In the later case we play back
@@ -146,7 +153,7 @@ public class Zombie implements ApplicationListener {
 				spawnChar();
 				StartTime = TimeUtils.nanoTime();
 			}	
-			if ((TimeUtils.nanoTime() - StartTime)/100 >= 100000000){
+			if (((TimeUtils.nanoTime() - StartTime)/100 >= 100000000) && level != 0){
 				zombies.clear();
 			}
 			
@@ -170,6 +177,15 @@ public class Zombie implements ApplicationListener {
 	
 	public void moveZombie(Rectangle zombie, int level){
 		switch (level){
+		case 0: if (zombie.x > rpgChar.x){
+			zombie.x -= ((zombie.x + rpgChar.x)/6)*Gdx.graphics.getDeltaTime();}
+			else{
+			zombie.x += ((zombie.x + rpgChar.x)/6)*Gdx.graphics.getDeltaTime();}
+			if (zombie.y > rpgChar.y){
+				zombie.y -= ((zombie.y + rpgChar.y)/6)*Gdx.graphics.getDeltaTime();}
+			else{
+				zombie.y += ((zombie.y + rpgChar.y)/6)*Gdx.graphics.getDeltaTime();}
+			break;
 		case 1: zombie.y -= 200 * Gdx.graphics.getDeltaTime();
 				break;
 		case 2: zombie.y -= 200 * Gdx.graphics.getDeltaTime();
@@ -189,8 +205,7 @@ public class Zombie implements ApplicationListener {
 				else{
 			zombie.y += ((zombie.y + rpgChar.y)/4)*Gdx.graphics.getDeltaTime();}
 				break;
-		
-				
+					
 		}
 		
 		
